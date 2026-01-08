@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import re
 import torch
+import os
 
 from transformers import BertTokenizer, BertModel
 from transformers import GPT2Tokenizer, GPT2Model
@@ -147,7 +148,7 @@ exp = explainer.explain_instance(
 
 display(exp.as_html())
 
-'''
+
 
 
 explainer = LimeTextExplainer(class_names=["Real", "Fake"])
@@ -158,5 +159,25 @@ print(exp.as_list())
 # Save explanation to HTML
 exp.save_to_file("lime_explanation.html")
 print("Saved LIME explanation to lime_explanation.html")
+'''
 
+# Create directory for LIME outputs
+os.makedirs("lime_outputs", exist_ok=True)
+
+explainer = LimeTextExplainer(class_names=["Real", "Fake"])
+
+# Loop over first 5 samples
+for i in range(5):
+    sample_text = df.iloc[i]["content"]
+    
+    exp = explainer.explain_instance(
+        sample_text,
+        predict_proba,   # your function returning probabilities
+        num_features=10
+    )
+    
+    # Save HTML file
+    file_path = f"lime_outputs/explanation_{i+1}.html"
+    exp.save_to_file(file_path)
+    print(f"LIME explanation saved: {file_path}")
 

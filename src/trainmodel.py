@@ -19,7 +19,7 @@ from tqdm import tqdm
 # ===============================
 # 2. LOAD DATASET
 # ===============================
-df = pd.read_csv("data/ifnd_dataset.csv")
+df = pd.read_csv("data/IFND.csv",encoding='latin1')
 
 # Combine headline and text
 df["content"] = df["headline"] + " " + df["text"]

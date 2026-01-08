@@ -48,9 +48,9 @@ df = df.dropna()
 # ===============================
 
 # Randomly mark half as fake (for testing the pipeline)
-df = df.sample(2000, random_state=42).reset_index(drop=True)
-df.loc[:999, "Label"] = 0  # First 1000 → Real
-df.loc[1000:, "Label"] = 1  # Last 1000 → Fake
+df = df.sample(1000, random_state=42).reset_index(drop=True)
+df.loc[:499, "Label"] = 0  # First 500 → Real
+df.loc[500:, "Label"] = 1  # Last 500 → Fake
 
 print(df["Label"].value_counts())
 
@@ -132,7 +132,7 @@ def predict_proba(texts):
     g = gpt_features(texts)
     fused = np.concatenate((b, g), axis=1)
     return model.predict_proba(fused)
-
+'''
 explainer = LimeTextExplainer(class_names=["Real", "Fake"])
 
 
@@ -146,4 +146,17 @@ exp = explainer.explain_instance(
 )
 
 display(exp.as_html())
+
+'''
+
+
+explainer = LimeTextExplainer(class_names=["Real", "Fake"])
+sample_text = df.iloc[0]["content"]
+exp = explainer.explain_instance(sample_text, predict_proba, num_features=10)
+#o/p for terminal
+print(exp.as_list())
+# Save explanation to HTML
+exp.save_to_file("lime_explanation.html")
+print("Saved LIME explanation to lime_explanation.html")
+
 

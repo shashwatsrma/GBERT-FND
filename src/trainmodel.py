@@ -20,9 +20,14 @@ from tqdm import tqdm
 # 2. LOAD DATASET
 # ===============================
 df = pd.read_csv("data/IFND.csv",encoding='latin1')
+print("COLUMNS:", df.columns)
+print(df.head())
+print("DATASET COLUMNS:", df.columns.tolist())
+exit()
+
 
 # Combine headline and text
-df["content"] = df["headline"] + " " + df["text"]
+df["content"] = df["statement"] + " " + df["text"]
 
 # ===============================
 # 3. TEXT PREPROCESSING

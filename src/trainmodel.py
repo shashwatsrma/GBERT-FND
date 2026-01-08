@@ -15,6 +15,7 @@ from sklearn.metrics import accuracy_score, classification_report
 
 from lime.lime_text import LimeTextExplainer
 from tqdm import tqdm
+from IPython.display import display  
 
 # ===============================
 # 2. LOAD DATASET
@@ -134,14 +135,15 @@ def predict_proba(texts):
 
 explainer = LimeTextExplainer(class_names=["Real", "Fake"])
 
-sample = df.iloc[0]["content"]
-explanation = explainer.explain_instance(
-    sample,
-    predict_proba,
+
+sample_text = df.iloc[0]["content"]
+
+
+exp = explainer.explain_instance(
+    sample_text,
+    predict_proba,  # your function returning probabilities
     num_features=10
 )
 
-from IPython.display import display
-
-display(exp.as_html())  # shows explanation as HTML in terminal browser
+display(exp.as_html())
 

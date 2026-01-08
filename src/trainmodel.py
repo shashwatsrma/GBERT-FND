@@ -20,15 +20,15 @@ from tqdm import tqdm
 # 2. LOAD DATASET
 # ===============================
 df = pd.read_csv("data/IFND.csv",encoding='latin1')
-print("COLUMNS:", df.columns)
-print(df.head())
-print("DATASET COLUMNS:", df.columns.tolist())
-exit()
 
 
 # Combine headline and text
-df["content"] = df["statement"] + " " + df["text"]
+df["content"] = df["statement"]
+#label column fixing
+df["Label"] = df["Label"].map({"TRUE": 0, "FALSE": 1})
 
+# Drop missing values
+df = df.dropna(subset=["content", "Label"])
 # ===============================
 # 3. TEXT PREPROCESSING
 # ===============================

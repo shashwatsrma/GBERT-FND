@@ -141,4 +141,7 @@ explanation = explainer.explain_instance(
     num_features=10
 )
 
-explanation.show_in_notebook()
+from IPython.display import display
+
+display(exp.as_html())  # shows explanation as HTML in terminal browser
+

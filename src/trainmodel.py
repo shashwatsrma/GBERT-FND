@@ -97,7 +97,7 @@ X_bert = bert_features(df["content"].tolist())
 X_gpt = gpt_features(df["content"].tolist())
 
 X = np.concatenate((X_bert, X_gpt), axis=1)
-y = df["label"].values
+y = df["Label"].values
 
 # ===============================
 # 8. TRAIN MODEL

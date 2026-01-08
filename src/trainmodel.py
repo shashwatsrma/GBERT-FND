@@ -133,10 +133,10 @@ def predict_proba(texts):
     g = gpt_features(texts)
     fused = np.concatenate((b, g), axis=1)
     return model.predict_proba(fused)
-'''
+
 explainer = LimeTextExplainer(class_names=["Real", "Fake"])
 
-
+'''''
 sample_text = df.iloc[0]["content"]
 
 
@@ -151,15 +151,7 @@ display(exp.as_html())
 
 
 
-explainer = LimeTextExplainer(class_names=["Real", "Fake"])
-sample_text = df.iloc[0]["content"]
-exp = explainer.explain_instance(sample_text, predict_proba, num_features=10)
-#o/p for terminal
-print(exp.as_list())
-# Save explanation to HTML
-exp.save_to_file("lime_explanation.html")
-print("Saved LIME explanation to lime_explanation.html")
-'''
+
 
 # Create directory for LIME outputs
 os.makedirs("lime_outputs", exist_ok=True)
@@ -180,4 +172,15 @@ for i in range(5):
     file_path = f"lime_outputs/explanation_{i+1}.html"
     exp.save_to_file(file_path)
     print(f"LIME explanation saved: {file_path}")
+'''
+explainer = LimeTextExplainer(class_names=["Real", "Fake"])
+sample_text = df.iloc[0]["content"]
+exp = explainer.explain_instance(sample_text, predict_proba, num_features=10)
+#o/p for terminal
+print(exp.as_list())
+# Save explanation to HTML
+exp.save_to_file("lime_explanation.html")
+print("Saved LIME explanation to lime_explanation.html")
+#for terminal
+print(exp.as_list())
 

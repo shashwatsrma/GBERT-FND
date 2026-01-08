@@ -23,7 +23,7 @@ df = pd.read_csv("data/IFND.csv",encoding='latin1')
 
 
 # Combine headline and text
-df["content"] = df["statement"]
+df["content"] = df["Statement"]
 #label column fixing
 df["Label"] = df["Label"].map({"TRUE": 0, "FALSE": 1})
 

@@ -45,7 +45,13 @@ df = df.dropna()
 # ===============================
 # 4. LIMIT DATA (FOR LEARNING)
 # ===============================
-df = df.sample(2000, random_state=42)
+
+# Randomly mark half as fake (for testing the pipeline)
+df = df.sample(2000, random_state=42).reset_index(drop=True)
+df.loc[:999, "Label"] = 0  # First 1000 → Real
+df.loc[1000:, "Label"] = 1  # Last 1000 → Fake
+
+print(df["Label"].value_counts())
 
 # ===============================
 # 5. LOAD MODELS

@@ -6,12 +6,6 @@ import numpy as np
 import re
 import torch
 import os
-import nltk
-
-
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize
 
 from transformers import BertTokenizer, BertModel
 from transformers import GPT2Tokenizer, GPT2Model
@@ -30,106 +24,50 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("Using device:", device)
 
 # ===============================
-# 3. LOAD & MERGE DATASETS
+# 3. LOAD DATASET
 # ===============================
-'''
-true_df = pd.read_csv("data/true.csv", encoding="latin1")
-fake_df = pd.read_csv("data/fake.csv", encoding="latin1")
+df = pd.read_csv("data/IFND.csv", encoding="latin1")
 
-true_df["Label"] = 0
-fake_df["Label"] = 1
+df["content"] = df["Statement"]
+df["Label"] = df["Label"].map({"TRUE": 0, "FALSE": 1})
 
-# Keep only text + label
-true_df = true_df[["text", "Label"]]
-fake_df = fake_df[["text", "Label"]]
-
-# Merge datasets
-df = pd.concat([true_df, fake_df], ignore_index=True)
-df.rename(columns={"text": "content"}, inplace=True)
-
-df.dropna(inplace=True)
-df.reset_index(drop=True, inplace=True)
-
-print("Dataset size:", len(df))
-print(df["Label"].value_counts())'''
-
-# Load datasets
-true_df = pd.read_csv("data/true.csv", encoding="latin1")
-fake_df = pd.read_csv("data/fake.csv", encoding="latin1")
-
-# Take 500 random samples from each
-true_df = true_df.sample(n=500, random_state=42)
-fake_df = fake_df.sample(n=500, random_state=42)
-
-# Add labels: 0 = true, 1 = fake
-true_df["Label"] = 0
-fake_df["Label"] = 1
-
-# Keep only relevant columns: text + label
-true_df = true_df[["text", "Label"]]
-fake_df = fake_df[["text", "Label"]]
-
-# Merge datasets
-df = pd.concat([true_df, fake_df], ignore_index=True)
-df.rename(columns={"text": "content"}, inplace=True)
-
-# Remove missing values and reset index
-df.dropna(subset=["content"], inplace=True)
-df.reset_index(drop=True, inplace=True)
-
-# Shuffle the dataset
-df = df.sample(frac=1, random_state=42).reset_index(drop=True)
-
-# Quick summary
-print("Dataset size:", len(df))
-print(df["Label"].value_counts())
+df = df.dropna(subset=["content", "Label"])
 
 # ===============================
-# 4. TEXT PREPROCESSING (OPTIMIZED FOR BERT+GPT + LIME)
+# 4. TEXT PREPROCESSING
 # ===============================
-
-
-# Optional contractions dictionary
-contractions = {
-    "can't": "cannot",
-    "won't": "will not",
-    "shouldn't": "should not",
-    "don't": "do not",
-    "didn't": "did not",
-    "it's": "it is",
-    "i'm": "i am",
-    "they're": "they are",
-    
-}
-
 def clean_text(text):
-    if not isinstance(text, str):
-        return ""
-    
-    text = text.lower()  # lowercase
-    
-    # Expand contractions
-    for contraction, full_form in contractions.items():
-        text = text.replace(contraction, full_form)
-    
-    # Remove URLs
+    text = text.lower()
     text = re.sub(r"http\S+", "", text)
-    
-    # Remove unwanted symbols but keep: 
-    # letters, numbers, spaces, hashtags, mentions, basic punctuation (.,!?)
-    text = re.sub(r"[^a-zA-Z0-9@#\s.,!?]", "", text)
-    
-    # Remove extra whitespace
-    text = re.sub(r"\s+", " ", text).strip()
-    
-    return text
+    text = re.sub(r"[^a-zA-Z ]", "", text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
 
-# Apply preprocessing
 df["content"] = df["content"].apply(clean_text)
 
+# ===============================
+# 5. DATA LIMIT (LEARNING PURPOSE)
+# ===============================
+"""
+NOTE:
+To understand the pipeline clearly, we balance the dataset manually.
+This step is ONLY for learning and experimentation.
+"""
+df = df.sample(10000, random_state=42).reset_index(drop=True)
+
+half = len(df) // 2
+df.loc[:half-1, "Label"] = 0   # Real
+df.loc[half:, "Label"] = 1     # Fake
+
+print("Balanced Label Distribution:")
+print(df["Label"].value_counts())
+
+print("Label distribution:\n", df["Label"].value_counts())
+exit()
+
 
 # ===============================
-# 5. LOAD MODELS
+# 6. LOAD MODELS
 # ===============================
 bert_tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 bert_model = BertModel.from_pretrained("bert-base-uncased").to(device)
@@ -141,10 +79,10 @@ gpt_model = GPT2Model.from_pretrained("gpt2").to(device)
 gpt_model.eval()
 
 # ===============================
-# 6. FEATURE EXTRACTION (BATCHED)
+# 7. FEATURE EXTRACTION (BATCHED)
 # ===============================
 def extract_bert_features(texts, batch_size=16):
-    features = []
+    all_features = []
     for i in tqdm(range(0, len(texts), batch_size), desc="BERT"):
         batch = texts[i:i+batch_size]
         inputs = bert_tokenizer(
@@ -158,13 +96,13 @@ def extract_bert_features(texts, batch_size=16):
         with torch.no_grad():
             outputs = bert_model(**inputs)
 
-        cls = outputs.last_hidden_state[:, 0, :].cpu().numpy()
-        features.append(cls)
+        cls_embeddings = outputs.last_hidden_state[:, 0, :].cpu().numpy()
+        all_features.append(cls_embeddings)
 
-    return np.vstack(features)
+    return np.vstack(all_features)
 
 def extract_gpt_features(texts, batch_size=16):
-    features = []
+    all_features = []
     for i in tqdm(range(0, len(texts), batch_size), desc="GPT"):
         batch = texts[i:i+batch_size]
         inputs = gpt_tokenizer(
@@ -178,38 +116,35 @@ def extract_gpt_features(texts, batch_size=16):
         with torch.no_grad():
             outputs = gpt_model(**inputs)
 
-        mean_embed = outputs.last_hidden_state.mean(dim=1).cpu().numpy()
-        features.append(mean_embed)
+        mean_embeddings = outputs.last_hidden_state.mean(dim=1).cpu().numpy()
+        all_features.append(mean_embeddings)
 
-    return np.vstack(features)
+    return np.vstack(all_features)
 
 # ===============================
-# 7. FEATURE FUSION
+# 8. FEATURE FUSION
 # ===============================
 X_bert = extract_bert_features(df["content"].tolist())
 X_gpt = extract_gpt_features(df["content"].tolist())
 
-X = np.concatenate([X_bert, X_gpt], axis=1)
+X = np.concatenate((X_bert, X_gpt), axis=1)
 y = df["Label"].values
 
 # ===============================
-# 8. TRAIN / TEST SPLIT
+# 9. TRAIN / TEST SPLIT
 # ===============================
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y,
-    test_size=0.2,
-    random_state=42,
-    stratify=y
+    X, y, test_size=0.2, random_state=42, stratify=y
 )
 
 # ===============================
-# 9. TRAIN CLASSIFIER
+# 10. TRAIN CLASSIFIER
 # ===============================
-model = LogisticRegression(max_iter=2000)
+model = LogisticRegression(max_iter=20000)
 model.fit(X_train, y_train)
 
 # ===============================
-# 10. EVALUATION
+# 11. EVALUATION
 # ===============================
 y_pred = model.predict(X_test)
 
@@ -217,17 +152,19 @@ print("\nAccuracy:", accuracy_score(y_test, y_pred))
 print("\nClassification Report:\n", classification_report(y_test, y_pred))
 
 # ===============================
-# 11. LIME EXPLAINABILITY
+# 12. LIME EXPLAINABILITY
 # ===============================
 def predict_proba_lime(texts):
     b = extract_bert_features(texts)
     g = extract_gpt_features(texts)
-    fused = np.concatenate([b, g], axis=1)
+    fused = np.concatenate((b, g), axis=1)
     return model.predict_proba(fused)
 
 explainer = LimeTextExplainer(class_names=["Real", "Fake"])
+
 os.makedirs("lime_outputs", exist_ok=True)
 
+# Generate explanations for 5 samples
 for i in range(5):
     text = df.iloc[i]["content"]
     exp = explainer.explain_instance(
@@ -236,10 +173,9 @@ for i in range(5):
         num_features=10
     )
 
-    print(f"\nSample {i+1} explanation:")
+    print(f"\nTop words for sample {i+1}:")
     print(exp.as_list())
 
-    exp.save_to_file(f"lime_outputs/TFexplanation_{i+1}.html")
-    print(f"LIME explanation for sample {i+1} saved.")
+    exp.save_to_file(f"lime_outputs/explanation_{i+1}.html")
 
 print("\nLIME explanations saved in lime_outputs/")

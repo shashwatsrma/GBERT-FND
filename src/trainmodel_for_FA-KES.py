@@ -26,6 +26,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report
 
 from lime.lime_text import LimeTextExplainer
+from trainmodel import predict_proba_lime
 
 # Download NLTK stopwords
 nltk.download('stopwords')
@@ -65,74 +66,37 @@ df = pd.concat([fake_sample, real_sample]).sample(frac=1, random_state=42).reset
 print("Final dataset size:", len(df))
 print(df["Label"].value_counts())
 
+print("\n before First 5 preprocessed samples:")
+print(df["content"].head)
+
 # ===============================
 # 4. FULL TEXT PREPROCESSING
 # ===============================
-# 4a. Identify frequent and rare words
-all_tokens = " ".join(df["content"].tolist()).lower().split()
-word_counts = Counter(all_tokens)
-
-# Frequent words (top 20)
-frequent_words = set([w for w, _ in word_counts.most_common(20)])
-
-# Rare words (appearing only once)
-rare_words = set([w for w, c in word_counts.items() if c == 1])
-
-# 4b. Define preprocessing function
-def full_preprocess(text, frequent_words=frequent_words, rare_words=rare_words, correct_spelling=False):
+def preprocess_for_transformers(text):
     if not isinstance(text, str):
         return ""
     
-    # Lowercase
+    # 1. Lowercase
     text = text.lower()
     
-    # Remove HTML tags
-    text = BeautifulSoup(text, "html.parser").get_text()
-    
-    # Remove URLs
+    # 2. Remove URLs
     text = re.sub(r"http\S+|www\.\S+", "", text)
     
-    # Remove social media / copyright boilerplate
-    text = re.sub(
-        r"(follow us on .*|subscribe .*|copyright .*|watch live tv .*|connect with .*|legal terms .*|privacy policy.*)",
-        "",
-        text,
-        flags=re.I
-    )
+    # 3. Remove HTML tags
+    from bs4 import BeautifulSoup
+    text = BeautifulSoup(text, "html.parser").get_text()
     
-    # Replace numbers with <NUM>
-    #text = re.sub(r"\d+", "<NUM>", text)
+    # 4. Remove repeated boilerplate phrases
+    text = re.sub(r"(follow us on .*|subscribe .*|copyright .*|watch live tv .*|connect with .*|legal terms .*|privacy policy.*)", "", text, flags=re.I)
     
-    # Remove punctuation (except sentence-ending: .!?)
-    text = re.sub(r"[^a-zA-Z\s.!?]", "", text)
-    
-    # Tokenize
-    tokens = text.split()
-    
-    # Remove stopwords
-    stop_words = set(stopwords.words("english"))
-    tokens = [w for w in tokens if w not in stop_words]
-    
-    # Remove frequent words
-    tokens = [w for w in tokens if w not in frequent_words]
-    
-    # Remove rare words
-    tokens = [w for w in tokens if w not in rare_words]
-    
-    # Optional spelling correction
-    if correct_spelling:
-        tokens = [str(TextBlob(w).correct()) for w in tokens]
-    
-    # Rejoin
-    text = " ".join(tokens)
-    
-    # Remove extra whitespace
+    # 5. Remove extra whitespace
     text = re.sub(r"\s+", " ", text).strip()
     
     return text
 
+
 # Apply preprocessing
-df["content"] = df["content"].apply(full_preprocess)
+df["content"] = df["content"].apply(preprocess_for_transformers)
 
 print("\nFirst 5 preprocessed samples:")
 print(df["content"].head())
@@ -216,6 +180,7 @@ print("\nClassification Report:\n", classification_report(y_test, y_pred))
 # ===============================
 # 11. LIME EXPLAINABILITY
 # ===============================
+'''
 def predict_proba_lime(texts):
     b = extract_bert_features(texts)
     g = extract_gpt_features(texts)
@@ -224,14 +189,62 @@ def predict_proba_lime(texts):
 
 explainer = LimeTextExplainer(class_names=["Fake", "Real"])
 os.makedirs("FA-KES_O_P", exist_ok=True)
+'''
+explainer = LimeTextExplainer(
+    class_names=["Fake", "Real"]
+)
 
+def predict_proba_lime(texts):
+    b = extract_bert_features(texts)
+    g = extract_gpt_features(texts)
+    fused = np.concatenate([b, g], axis=1)
+    return model.predict_proba(fused)
 
-for i in range(3):
+def generate_explanation_summary(text):
+    probs = predict_proba_lime([text])[0]
+
+    fake_prob, real_prob = probs
+    predicted_label = "fake" if fake_prob > real_prob else "real"
+    confidence = max(fake_prob, real_prob) * 100
+
+    exp = explainer.explain_instance(
+        text,
+        predict_proba_lime,
+        num_features=10
+    )
+
+    lime_words = [
+        word for word, weight in exp.as_list()
+        if weight > 0
+    ]
+
+    key_terms = ", ".join([f"“{w}”" for w in lime_words[:3]])
+
+    summary = (
+        f"The hybrid BERT–GPT model classified the news article as "
+        f"{predicted_label} with a probability of {confidence:.0f}%, "
+        f"and LIME analysis revealed that keywords such as {key_terms} "
+        f"were the primary contributors to this decision."
+    )
+
+    return summary, exp
+'''for i in range(3):
     text = df.iloc[i]["content"]
     exp = explainer.explain_instance(text, predict_proba_lime, num_features=10)
     print(f"\nSample {i+1} top words contributing to prediction:")
     print(exp.as_list())
-    exp.save_to_file(f"FA-KES O_P/After_TP(1)/FAKES_explanation_{i+1}.html")
+    exp.save_to_file(f"FA-KES O_P/After_TP(1)/(1)FAKES_explanation_{i+1}.html")
     print(f"LIME explanation for sample {i+1} saved.")
 
-print("\nAll LIME explanations saved in 'FA-KES O_P/After_TP(1)' folder.")
+print("\nAll LIME explanations saved in 'FA-KES O_P/After_TP(1)' folder.")'''
+
+for i in range(1):
+    text = df.iloc[i]["content"]
+    
+    summary = generate_explanation_summary(text)
+    print(f"\nSample {i+1} Explanation Summary:")
+    print(summary)
+    
+    exp = explainer.explain_instance(text, predict_proba_lime, num_features=10)
+    exp.save_to_file(f"FA-KES O_P/After_TP(1)/(sum)FAKES_explanation_{i+1}.html")
+print("\nAll LIME explanations saved in 'FA-KES_O_P/After_TP(1)' folder.")

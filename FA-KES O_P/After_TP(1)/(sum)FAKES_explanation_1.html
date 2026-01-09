@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divYAEV4O0ABGMZKK1"></div>
+        <div class="lime top_div" id="top_divXNSGCJR5YFQRXXG"></div>
         
         <script>
-        var top_div = d3.select('#top_divYAEV4O0ABGMZKK1').classed('lime top_div', true);
+        var top_div = d3.select('#top_divXNSGCJR5YFQRXXG').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [0.712661722310598, 0.287338277689402]);
+            var pp = new lime.PredictProba(pp_svg, ["Fake", "Real"], [0.07756964776732778, 0.9224303522326722]);
             
         
         var exp_div;
-            var exp = new lime.Explanation(["Real", "Fake"]);
+            var exp = new lime.Explanation(["Fake", "Real"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["positive", -0.26463884481444144], ["gadkari", -0.244884307480723], ["for", -0.21089421529975824], ["tests", -0.1706740799576991], ["virus", -0.061319398464595394], ["nitin", 0.021161252854505756]], 1, exp_div);
+                exp.show([["thursday", 0.04518614984418745], ["a", -0.02773373425930311], ["city", -0.02411874623470805], ["said", -0.022834355449518833], ["2016", -0.02209366328201894], ["aug", 0.016969116115462604], ["children", -0.01654501779201754], ["were", -0.014446259265282148], ["barrel", -0.014019565736263203], ["britain", 0.005847211110128729]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["positive", 20, -0.26463884481444144], ["gadkari", 6, -0.244884307480723], ["for", 29, -0.21089421529975824], ["tests", 14, -0.1706740799576991], ["virus", 33, -0.061319398464595394], ["nitin", 0, 0.021161252854505756]], 1, "nitin gadkari tests positive for virus", raw_div, true);
+            exp.show_raw_text([["thursday", 0, 0.04518614984418745], ["thursday", 118, 0.04518614984418745], ["thursday", 526, 0.04518614984418745], ["a", 130, -0.02773373425930311], ["a", 187, -0.02773373425930311], ["a", 236, -0.02773373425930311], ["a", 309, -0.02773373425930311], ["city", 231, -0.02411874623470805], ["city", 385, -0.02411874623470805], ["city", 584, -0.02411874623470805], ["said", 246, -0.022834355449518833], ["said", 452, -0.022834355449518833], ["2016", 16, -0.02209366328201894], ["aug", 12, 0.016969116115462604], ["children", 49, -0.01654501779201754], ["children", 94, -0.01654501779201754], ["children", 285, -0.01654501779201754], ["children", 505, -0.01654501779201754], ["were", 103, -0.014446259265282148], ["were", 294, -0.014446259265282148], ["were", 514, -0.014446259265282148], ["barrel", 21, -0.014019565736263203], ["barrel", 132, -0.014019565736263203], ["barrel", 311, -0.014019565736263203], ["britain", 394, 0.005847211110128729]], 1, "thursday 25 aug 2016 barrel bomb attack kills 11 children in syrias aleppo monitor afp eleven children were killed on thursday in a barrel bomb attack carried out by government forces on a rebel-held neighbourhood of syrias aleppo city a monitor said. \"fifteen civilians among them 11 children were killed in a barrel bomb attack on the bab al-nayrab neighbourhood\" in southern aleppo city the britain-based syrian observatory for human rights monitor said. it also reported eight civilians including two children were killed thursday in rebel fire on the government-held west of the city.", raw_div, true);
             
         </script>
         </body></html>

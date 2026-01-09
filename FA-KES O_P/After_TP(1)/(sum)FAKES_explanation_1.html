@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_div8R7V9A59HEFYPPP"></div>
+        <div class="lime top_div" id="top_div2TVKMUG3C3N04VE"></div>
         
         <script>
-        var top_div = d3.select('#top_div8R7V9A59HEFYPPP').classed('lime top_div', true);
+        var top_div = d3.select('#top_div2TVKMUG3C3N04VE').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["Fake", "Real"], [0.05164996675932576, 0.9483500332406742]);
+            var pp = new lime.PredictProba(pp_svg, ["Fake", "Real"], [0.8325510683215605, 0.16744893167843958]);
             
         
         var exp_div;
             var exp = new lime.Explanation(["Fake", "Real"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["bomb", 0.1306408242519613], ["attack", 0.1286314429140346], ["11", 0.07391216474785885], ["kills", 0.059655814619158615], ["barrel", 0.04372853190318928], ["in", 0.026571452585538082], ["syrias", -0.025286906478445267], ["monitor", -0.019638658615001494], ["children", 0.011050756482594789], ["aleppo", -0.009241035338809184]], 1, exp_div);
+                exp.show([["in", -0.14612551914238547], ["airstrikes", -0.12150879181775429], ["dead", -0.11068165219027401], ["of", -0.09077982927565713], ["syria", 0.0669643108499493], ["five", 0.05552585490860697], ["planned", -0.04987626877822029], ["ahead", 0.04680558354794805], ["ceasefire", 0.0038223146840288755]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["bomb", 7, 0.1306408242519613], ["attack", 12, 0.1286314429140346], ["11", 25, 0.07391216474785885], ["kills", 19, 0.059655814619158615], ["barrel", 0, 0.04372853190318928], ["in", 37, 0.026571452585538082], ["syrias", 40, -0.025286906478445267], ["monitor", 54, -0.019638658615001494], ["children", 28, 0.011050756482594789], ["aleppo", 47, -0.009241035338809184]], 1, "barrel bomb attack kills 11 children in syrias aleppo monitor", raw_div, true);
+            exp.show_raw_text([["in", 10, -0.14612551914238547], ["airstrikes", 19, -0.12150879181775429], ["dead", 5, -0.11068165219027401], ["of", 36, -0.09077982927565713], ["syria", 13, 0.0669643108499493], ["five", 0, 0.05552585490860697], ["planned", 39, -0.04987626877822029], ["ahead", 30, 0.04680558354794805], ["ceasefire", 47, 0.0038223146840288755]], 1, "five dead in syria airstrikes ahead of planned ceasefire", raw_div, true);
             
         </script>
         </body></html>

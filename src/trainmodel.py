@@ -29,7 +29,7 @@ print("Using device:", device)
 df = pd.read_csv("data/IFND.csv", encoding="latin1")
 
 df["content"] = df["Statement"]
-df["Label"] = df["Label"].map({"TRUE": 0, "FALSE": 1})
+df["Label"] = df["Label"].map({"TRUE": 0, "Fake": 1})  # 0 = Real, 1 = Fake
 
 df = df.dropna(subset=["content", "Label"])
 
@@ -46,23 +46,20 @@ def clean_text(text):
 df["content"] = df["content"].apply(clean_text)
 
 # ===============================
-# 5. DATA LIMIT (LEARNING PURPOSE)
+# 5. DATA LIMIT WITH STRATIFIED SAMPLING
 # ===============================
-"""
-NOTE:
-To understand the pipeline clearly, we balance the dataset manually.
-This step is ONLY for learning and experimentation.
-"""
-df = df.sample(10000, random_state=42).reset_index(drop=True)
+# Ensure subset preserves class balance
+df_limited, _ = train_test_split(
+    df,
+    train_size=30000,
+    stratify=df["Label"],
+    random_state=42
+)
 
-half = len(df) // 2
-df.loc[:half-1, "Label"] = 0   # Real
-df.loc[half:, "Label"] = 1     # Fake
+df = df_limited.reset_index(drop=True)
 
-print("Balanced Label Distribution:")
+print("Label Distribution after stratified sampling:")
 print(df["Label"].value_counts())
-
-
 
 # ===============================
 # 6. LOAD MODELS
@@ -122,7 +119,9 @@ def extract_gpt_features(texts, batch_size=16):
 # ===============================
 # 8. FEATURE FUSION
 # ===============================
+print("Extracting BERT features...")
 X_bert = extract_bert_features(df["content"].tolist())
+print("Extracting GPT features...")
 X_gpt = extract_gpt_features(df["content"].tolist())
 
 X = np.concatenate((X_bert, X_gpt), axis=1)
@@ -149,9 +148,7 @@ y_pred = model.predict(X_test)
 print("\nAccuracy:", accuracy_score(y_test, y_pred))
 print("\nClassification Report:\n", classification_report(y_test, y_pred))
 
-
-
-'''# ===============================
+# ===============================
 # 12. LIME EXPLAINABILITY
 # ===============================
 def predict_proba_lime(texts):
@@ -164,7 +161,7 @@ explainer = LimeTextExplainer(class_names=["Real", "Fake"])
 
 os.makedirs("lime_outputs", exist_ok=True)
 
-# Generate explanations for 5 samples
+# Generate explanations for first 5 samples
 for i in range(2):
     text = df.iloc[i]["content"]
     exp = explainer.explain_instance(
@@ -176,7 +173,6 @@ for i in range(2):
     print(f"\nTop words for sample {i+1}:")
     print(exp.as_list())
 
-    exp.save_to_file(f"lime_outputs/(2)explanation_{i+1}.html")
+    exp.save_to_file(f"IFND(FIX)/explanation_{i+1}.html")
 
-print("\nLIME explanations saved in lime_outputs/")
-'''
+print("\nLIME explanations saved in IFND(FIX)/")

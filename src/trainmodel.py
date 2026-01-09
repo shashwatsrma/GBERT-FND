@@ -6,6 +6,12 @@ import numpy as np
 import re
 import torch
 import os
+import nltk
+
+
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
 
 from transformers import BertTokenizer, BertModel
 from transformers import GPT2Tokenizer, GPT2Model
@@ -79,16 +85,58 @@ print("Dataset size:", len(df))
 print(df["Label"].value_counts())
 
 # ===============================
-# 4. TEXT PREPROCESSING
+# 4. TEXT PREPROCESSING (UPDATED)
 # ===============================
+
+
+# Download NLTK resources (if not already)
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+
+stop_words = set(stopwords.words('english'))
+lemmatizer = WordNetLemmatizer()
+
+# Optional contractions dictionary
+contractions = {
+    "can't": "cannot",
+    "won't": "will not",
+    "shouldn't": "should not",
+    "don't": "do not",
+    "didn't": "did not",
+    "it's": "it is",
+    "i'm": "i am",
+    "they're": "they are",
+    # add more as needed
+}
+
 def clean_text(text):
     text = text.lower()
+    
+    # Expand contractions
+    for contraction, full_form in contractions.items():
+        text = text.replace(contraction, full_form)
+    
+    # Remove URLs
     text = re.sub(r"http\S+", "", text)
-    text = re.sub(r"[^a-zA-Z ]", "", text)
-    text = re.sub(r"\s+", " ", text)
-    return text.strip()
+    
+    # Keep hashtags, mentions, words; remove other symbols
+    text = re.sub(r"[^a-zA-Z0-9@#\s]", "", text)
+    
+    # Tokenize
+    tokens = word_tokenize(text)
+    
+    # Remove stop words (but keep hashtags and mentions)
+    tokens = [lemmatizer.lemmatize(word) 
+              for word in tokens 
+              if word not in stop_words or word.startswith(('#', '@'))]
+    
+    return " ".join(tokens)
 
+# Apply preprocessing
 df["content"] = df["content"].apply(clean_text)
+
 
 # ===============================
 # 5. LOAD MODELS

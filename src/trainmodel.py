@@ -51,9 +51,9 @@ print(df["Label"].value_counts())'''
 true_df = pd.read_csv("data/true.csv", encoding="latin1")
 fake_df = pd.read_csv("data/fake.csv", encoding="latin1")
 
-# Take 1000 random samples from each
-true_df = true_df.sample(n=1000, random_state=42)
-fake_df = fake_df.sample(n=1000, random_state=42)
+# Take 500 random samples from each
+true_df = true_df.sample(n=500, random_state=42)
+fake_df = fake_df.sample(n=500, random_state=42)
 
 # Add labels: 0 = true, 1 = fake
 true_df["Label"] = 0
@@ -167,7 +167,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 # ===============================
 # 9. TRAIN CLASSIFIER
 # ===============================
-model = LogisticRegression(max_iter=10000)
+model = LogisticRegression(max_iter=2000)
 model.fit(X_train, y_train)
 
 # ===============================
@@ -201,6 +201,7 @@ for i in range(5):
     print(f"\nSample {i+1} explanation:")
     print(exp.as_list())
 
-    exp.save_to_file(f"lime_outputs/explanation_{i+1}.html")
+    exp.save_to_file(f"lime_outputs/TFexplanation_{i+1}.html")
+    print(f"LIME explanation for sample {i+1} saved.")
 
 print("\nLIME explanations saved in lime_outputs/")

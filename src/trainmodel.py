@@ -149,7 +149,9 @@ y_pred = model.predict(X_test)
 print("\nAccuracy:", accuracy_score(y_test, y_pred))
 print("\nClassification Report:\n", classification_report(y_test, y_pred))
 
-# ===============================
+
+
+'''# ===============================
 # 12. LIME EXPLAINABILITY
 # ===============================
 def predict_proba_lime(texts):
@@ -177,3 +179,4 @@ for i in range(2):
     exp.save_to_file(f"lime_outputs/(2)explanation_{i+1}.html")
 
 print("\nLIME explanations saved in lime_outputs/")
+'''

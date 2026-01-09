@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_div6MV7PY7ZL7FU8Y4"></div>
+        <div class="lime top_div" id="top_divPT3CBKOI3Q2QA5I"></div>
         
         <script>
-        var top_div = d3.select('#top_div6MV7PY7ZL7FU8Y4').classed('lime top_div', true);
+        var top_div = d3.select('#top_divPT3CBKOI3Q2QA5I').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [0.9001009250645499, 0.09989907493545018]);
+            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [0.8879474056244931, 0.11205259437550691]);
             
         
         var exp_div;
             var exp = new lime.Explanation(["Real", "Fake"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["india", -0.23140139819042008], ["chandra", 0.18862234677819226], ["hindu", -0.1266328668914188], ["banerjee", -0.1250665382366577], ["fought", -0.11921043743997854], ["bose", 0.09136979761716145], ["mamata", -0.07105065830112649], ["for", -0.06090492561998453], ["opposed", -0.05154650036021991], ["subhas", 0.0478888666462747]], 1, exp_div);
+                exp.show([["opposed", -0.25668808188735603], ["fought", -0.16413366881815056], ["hindu", -0.15275772218627706], ["banerjee", -0.1469447028356695], ["mahasabha", -0.13198830403927828], ["bose", -0.12221345819442592], ["for", -0.11884318819973066], ["mamata", -0.07506092784724776], ["chandra", -0.06655764073069802], ["secular", 0.027937238618088743]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["india", 63, -0.23140139819042008], ["chandra", 7, 0.18862234677819226], ["hindu", 28, -0.1266328668914188], ["banerjee", 76, -0.1250665382366577], ["fought", 44, -0.11921043743997854], ["bose", 15, 0.09136979761716145], ["mamata", 69, -0.07105065830112649], ["for", 51, -0.06090492561998453], ["opposed", 20, -0.05154650036021991], ["subhas", 0, 0.0478888666462747]], 1, "subhas chandra bose opposed hindu mahasabha fought for secular india mamata banerjee", raw_div, true);
+            exp.show_raw_text([["opposed", 20, -0.25668808188735603], ["fought", 44, -0.16413366881815056], ["hindu", 28, -0.15275772218627706], ["banerjee", 76, -0.1469447028356695], ["mahasabha", 34, -0.13198830403927828], ["bose", 15, -0.12221345819442592], ["for", 51, -0.11884318819973066], ["mamata", 69, -0.07506092784724776], ["chandra", 7, -0.06655764073069802], ["secular", 55, 0.027937238618088743]], 1, "subhas chandra bose opposed hindu mahasabha fought for secular india mamata banerjee", raw_div, true);
             
         </script>
         </body></html>

@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divTDR3T8J9TLIF70A"></div>
+        <div class="lime top_div" id="top_divD30GONEEO06HKPS"></div>
         
         <script>
-        var top_div = d3.select('#top_divTDR3T8J9TLIF70A').classed('lime top_div', true);
+        var top_div = d3.select('#top_divD30GONEEO06HKPS').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [0.8629806457730818, 0.13701935422691824]);
+            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [0.712661722310598, 0.287338277689402]);
             
         
         var exp_div;
             var exp = new lime.Explanation(["Real", "Fake"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["tests", -0.25146247905244523], ["virus", -0.18104570316263527], ["positive", -0.10687283567857982], ["nitin", 0.09713354650619395], ["for", -0.04940925710029938], ["gadkari", 0.03978867283488454]], 1, exp_div);
+                exp.show([["positive", -0.2622971581788041], ["gadkari", -0.24076044469582109], ["for", -0.2058242828451972], ["tests", -0.16820020752790127], ["virus", -0.06541816949100192], ["nitin", 0.020129253760564153]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["tests", 14, -0.25146247905244523], ["virus", 33, -0.18104570316263527], ["positive", 20, -0.10687283567857982], ["nitin", 0, 0.09713354650619395], ["for", 29, -0.04940925710029938], ["gadkari", 6, 0.03978867283488454]], 1, "nitin gadkari tests positive for virus", raw_div, true);
+            exp.show_raw_text([["positive", 20, -0.2622971581788041], ["gadkari", 6, -0.24076044469582109], ["for", 29, -0.2058242828451972], ["tests", 14, -0.16820020752790127], ["virus", 33, -0.06541816949100192], ["nitin", 0, 0.020129253760564153]], 1, "nitin gadkari tests positive for virus", raw_div, true);
             
         </script>
         </body></html>

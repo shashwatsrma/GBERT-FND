@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_div55H421VVG9GVPE0"></div>
+        <div class="lime top_div" id="top_divW9QOG53L9RLPRIK"></div>
         
         <script>
-        var top_div = d3.select('#top_div55H421VVG9GVPE0').classed('lime top_div', true);
+        var top_div = d3.select('#top_divW9QOG53L9RLPRIK').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [0.8224322508045261, 0.17756774919547397]);
+            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [0.5116336407397071, 0.4883663592602929]);
             
         
         var exp_div;
             var exp = new lime.Explanation(["Real", "Fake"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["its", 0.21068645373832576], ["motegi", -0.1526010693332278], ["attaches", -0.14557417989735918], ["to", 0.13489971712787838], ["relations", -0.1348608762905551], ["with", -0.12214287544569616], ["strategic", 0.11680495746835627], ["importance", -0.06751516898351491], ["india", -0.05563305442789338], ["japan", 0.05197063839394177]], 1, exp_div);
+                exp.show([["importance", -0.15389813419329673], ["attaches", -0.10001744559855866], ["strategic", 0.07892992358843105], ["motegi", -0.07332651477996686], ["its", -0.06506779280937454], ["fm", -0.04948042228414489], ["with", -0.03829772014635365], ["relations", -0.029527868622854975], ["india", 0.020903027567907833], ["to", 0.007383317494982298]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["its", 29, 0.21068645373832576], ["motegi", 78, -0.1526010693332278], ["attaches", 6, -0.14557417989735918], ["to", 26, 0.13489971712787838], ["relations", 43, -0.1348608762905551], ["with", 53, -0.12214287544569616], ["strategic", 33, 0.11680495746835627], ["importance", 15, -0.06751516898351491], ["india", 58, -0.05563305442789338], ["japan", 0, 0.05197063839394177]], 1, "japan attaches importance to its strategic relations with india fm toshimitsu motegi", raw_div, true);
+            exp.show_raw_text([["importance", 15, -0.15389813419329673], ["attaches", 6, -0.10001744559855866], ["strategic", 33, 0.07892992358843105], ["motegi", 78, -0.07332651477996686], ["its", 29, -0.06506779280937454], ["fm", 64, -0.04948042228414489], ["with", 53, -0.03829772014635365], ["relations", 43, -0.029527868622854975], ["india", 58, 0.020903027567907833], ["to", 26, 0.007383317494982298]], 1, "japan attaches importance to its strategic relations with india fm toshimitsu motegi", raw_div, true);
             
         </script>
         </body></html>

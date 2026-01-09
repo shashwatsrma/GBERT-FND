@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divEBW13PYXUCEQJ0D"></div>
+        <div class="lime top_div" id="top_div4I17WUUMBQ5Q2BU"></div>
         
         <script>
-        var top_div = d3.select('#top_divEBW13PYXUCEQJ0D').classed('lime top_div', true);
+        var top_div = d3.select('#top_div4I17WUUMBQ5Q2BU').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [0.8466024744982488, 0.1533975255017512]);
+            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [0.4086207738823706, 0.5913792261176294]);
             
         
         var exp_div;
             var exp = new lime.Explanation(["Real", "Fake"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["riots", -0.08447539430508122], ["for", -0.07570438827434363], ["turkey", -0.06454739557556552], ["political", 0.06420203722086482], ["india", 0.055630541276292036], ["president", -0.053495715896214976], ["delhi", -0.0451226211518836], ["agenda", 0.02875694306109491], ["calls", -0.021012933227529607], ["remark", -0.012022835606686258]], 1, exp_div);
+                exp.show([["slams", -0.0992939183973905], ["for", -0.09083386973006152], ["calls", -0.08207135137420771], ["president", -0.07753904630245952], ["turkey", -0.05933367620173825], ["political", -0.039966095421451964], ["india", 0.039785422575309655], ["riots", -0.0319352512082399], ["agenda", -0.03072744110737578], ["delhi", -0.010282695889580898]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["riots", 39, -0.08447539430508122], ["for", 29, -0.07570438827434363], ["turkey", 12, -0.06454739557556552], ["political", 61, 0.06420203722086482], ["india", 0, 0.055630541276292036], ["president", 19, -0.053495715896214976], ["delhi", 33, -0.0451226211518836], ["agenda", 71, 0.02875694306109491], ["calls", 52, -0.021012933227529607], ["remark", 45, -0.012022835606686258]], 1, "india slams turkey president for delhi riots remark calls it political agenda", raw_div, true);
+            exp.show_raw_text([["slams", 6, -0.0992939183973905], ["for", 29, -0.09083386973006152], ["calls", 52, -0.08207135137420771], ["president", 19, -0.07753904630245952], ["turkey", 12, -0.05933367620173825], ["political", 61, -0.039966095421451964], ["india", 0, 0.039785422575309655], ["riots", 39, -0.0319352512082399], ["agenda", 71, -0.03072744110737578], ["delhi", 33, -0.010282695889580898]], 1, "india slams turkey president for delhi riots remark calls it political agenda", raw_div, true);
             
         </script>
         </body></html>

@@ -16,23 +16,38 @@ from sklearn.metrics import accuracy_score, classification_report
 
 from lime.lime_text import LimeTextExplainer
 from tqdm import tqdm
-from IPython.display import display  
 
 # ===============================
-# 2. LOAD DATASET
+# 2. DEVICE CONFIGURATION
 # ===============================
-df = pd.read_csv("data/IFND.csv",encoding='latin1')
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("Using device:", device)
 
-
-# Combine headline and text
-df["content"] = df["Statement"]
-#label column fixing
-df["Label"] = df["Label"].map({"TRUE": 0, "FALSE": 1})
-
-# Drop missing values
-df = df.dropna(subset=["content", "Label"])
 # ===============================
-# 3. TEXT PREPROCESSING
+# 3. LOAD & MERGE DATASETS
+# ===============================
+true_df = pd.read_csv("data/true.csv", encoding="latin1")
+fake_df = pd.read_csv("data/fake.csv", encoding="latin1")
+
+true_df["Label"] = 0
+fake_df["Label"] = 1
+
+# Keep only text + label
+true_df = true_df[["text", "Label"]]
+fake_df = fake_df[["text", "Label"]]
+
+# Merge datasets
+df = pd.concat([true_df, fake_df], ignore_index=True)
+df.rename(columns={"text": "content"}, inplace=True)
+
+df.dropna(inplace=True)
+df.reset_index(drop=True, inplace=True)
+
+print("Dataset size:", len(df))
+print(df["Label"].value_counts())
+
+# ===============================
+# 4. TEXT PREPROCESSING
 # ===============================
 def clean_text(text):
     text = text.lower()
@@ -42,145 +57,118 @@ def clean_text(text):
     return text.strip()
 
 df["content"] = df["content"].apply(clean_text)
-df = df.dropna()
-
-# ===============================
-# 4. LIMIT DATA (FOR LEARNING)
-# ===============================
-
-# Randomly mark half as fake (for testing the pipeline)
-df = df.sample(1000, random_state=42).reset_index(drop=True)
-df.loc[:499, "Label"] = 0  # First 500 → Real
-df.loc[500:, "Label"] = 1  # Last 500 → Fake
-
-print(df["Label"].value_counts())
 
 # ===============================
 # 5. LOAD MODELS
 # ===============================
 bert_tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
-bert_model = BertModel.from_pretrained("bert-base-uncased")
+bert_model = BertModel.from_pretrained("bert-base-uncased").to(device)
+bert_model.eval()
 
 gpt_tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
 gpt_tokenizer.pad_token = gpt_tokenizer.eos_token
-gpt_model = GPT2Model.from_pretrained("gpt2")
+gpt_model = GPT2Model.from_pretrained("gpt2").to(device)
+gpt_model.eval()
 
 # ===============================
-# 6. FEATURE EXTRACTION
+# 6. FEATURE EXTRACTION (BATCHED)
 # ===============================
-def bert_features(texts):
+def extract_bert_features(texts, batch_size=16):
     features = []
-    for text in tqdm(texts, desc="BERT"):
+    for i in tqdm(range(0, len(texts), batch_size), desc="BERT"):
+        batch = texts[i:i+batch_size]
         inputs = bert_tokenizer(
-            text,
+            batch,
             return_tensors="pt",
             truncation=True,
             padding=True,
             max_length=256
-        )
+        ).to(device)
+
         with torch.no_grad():
             outputs = bert_model(**inputs)
-        features.append(outputs.last_hidden_state[:, 0, :].numpy().flatten())
-    return np.array(features)
 
-def gpt_features(texts):
+        cls = outputs.last_hidden_state[:, 0, :].cpu().numpy()
+        features.append(cls)
+
+    return np.vstack(features)
+
+def extract_gpt_features(texts, batch_size=16):
     features = []
-    for text in tqdm(texts, desc="GPT"):
+    for i in tqdm(range(0, len(texts), batch_size), desc="GPT"):
+        batch = texts[i:i+batch_size]
         inputs = gpt_tokenizer(
-            text,
+            batch,
             return_tensors="pt",
             truncation=True,
             padding=True,
             max_length=256
-        )
+        ).to(device)
+
         with torch.no_grad():
             outputs = gpt_model(**inputs)
-        features.append(outputs.last_hidden_state.mean(dim=1).numpy().flatten())
-    return np.array(features)
+
+        mean_embed = outputs.last_hidden_state.mean(dim=1).cpu().numpy()
+        features.append(mean_embed)
+
+    return np.vstack(features)
 
 # ===============================
-# 7. EXTRACT FEATURES
+# 7. FEATURE FUSION
 # ===============================
-X_bert = bert_features(df["content"].tolist())
-X_gpt = gpt_features(df["content"].tolist())
+X_bert = extract_bert_features(df["content"].tolist())
+X_gpt = extract_gpt_features(df["content"].tolist())
 
-X = np.concatenate((X_bert, X_gpt), axis=1)
+X = np.concatenate([X_bert, X_gpt], axis=1)
 y = df["Label"].values
 
 # ===============================
-# 8. TRAIN MODEL
+# 8. TRAIN / TEST SPLIT
 # ===============================
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
+    X, y,
+    test_size=0.2,
+    random_state=42,
+    stratify=y
 )
 
-model = LogisticRegression(max_iter=3000)
+# ===============================
+# 9. TRAIN CLASSIFIER
+# ===============================
+model = LogisticRegression(max_iter=10000)
 model.fit(X_train, y_train)
 
 # ===============================
-# 9. EVALUATION
+# 10. EVALUATION
 # ===============================
-preds = model.predict(X_test)
+y_pred = model.predict(X_test)
 
-print("Accuracy:", accuracy_score(y_test, preds))
-print(classification_report(y_test, preds))
+print("\nAccuracy:", accuracy_score(y_test, y_pred))
+print("\nClassification Report:\n", classification_report(y_test, y_pred))
 
 # ===============================
-# 10. LIME EXPLAINABILITY
+# 11. LIME EXPLAINABILITY
 # ===============================
-def predict_proba(texts):
-    b = bert_features(texts)
-    g = gpt_features(texts)
-    fused = np.concatenate((b, g), axis=1)
+def predict_proba_lime(texts):
+    b = extract_bert_features(texts)
+    g = extract_gpt_features(texts)
+    fused = np.concatenate([b, g], axis=1)
     return model.predict_proba(fused)
 
 explainer = LimeTextExplainer(class_names=["Real", "Fake"])
-
-'''''
-sample_text = df.iloc[0]["content"]
-
-
-exp = explainer.explain_instance(
-    sample_text,
-    predict_proba,  # your function returning probabilities
-    num_features=10
-)
-
-display(exp.as_html())
-
-
-
-
-
-
-# Create directory for LIME outputs
 os.makedirs("lime_outputs", exist_ok=True)
 
-explainer = LimeTextExplainer(class_names=["Real", "Fake"])
-
-# Loop over first 5 samples
 for i in range(5):
-    sample_text = df.iloc[i]["content"]
-    
+    text = df.iloc[i]["content"]
     exp = explainer.explain_instance(
-        sample_text,
-        predict_proba,   # your function returning probabilities
+        text,
+        predict_proba_lime,
         num_features=10
     )
-    
-    # Save HTML file
-    file_path = f"lime_outputs/explanation_{i+1}.html"
-    exp.save_to_file(file_path)
-    print(f"LIME explanation saved: {file_path}")
-'''
-explainer = LimeTextExplainer(class_names=["Real", "Fake"])
-sample_text = df.iloc[0]["content"]
-exp = explainer.explain_instance(sample_text, predict_proba, num_features=10)
-#o/p for terminal
-print(exp.as_list())
-# Save explanation to HTML
-exp.save_to_file("lime_explanation.html")
-print("Saved LIME explanation to lime_explanation.html")
-#for terminal
-print(exp.as_list())
 
+    print(f"\nSample {i+1} explanation:")
+    print(exp.as_list())
+
+    exp.save_to_file(f"lime_outputs/explanation_{i+1}.html")
+
+print("\nLIME explanations saved in lime_outputs/")

@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divZS61DBJIQBOY2CV"></div>
+        <div class="lime top_div" id="top_divU7CINXS5HOBW15V"></div>
         
         <script>
-        var top_div = d3.select('#top_divZS61DBJIQBOY2CV').classed('lime top_div', true);
+        var top_div = d3.select('#top_divU7CINXS5HOBW15V').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [0.8443318057249586, 0.1556681942750414]);
+            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [0.6798607132012422, 0.3201392867987578]);
             
         
         var exp_div;
             var exp = new lime.Explanation(["Real", "Fake"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["charged", -0.2502896578031994], ["house", 0.22795212792166336], ["police", 0.15674897537851473], ["with", -0.10681439435751094], ["of", -0.10354162689604948], ["sedition", 0.0511065103044161], ["jnu", -0.04644655161138363], ["raid", -0.009755527448773275], ["student", 0.00852124624030308]], 1, exp_div);
+                exp.show([["of", -0.18320352105176238], ["raid", -0.15976284329143042], ["jnu", -0.12065274134101796], ["house", -0.11596292739321856], ["charged", -0.095326019569059], ["with", -0.07203824995508956], ["student", -0.04012503290716013], ["police", -0.03969934125438414], ["sedition", 0.03268169935864346]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["charged", 33, -0.2502896578031994], ["house", 12, 0.22795212792166336], ["police", 0, 0.15674897537851473], ["with", 41, -0.10681439435751094], ["of", 18, -0.10354162689604948], ["sedition", 46, 0.0511065103044161], ["jnu", 21, -0.04644655161138363], ["raid", 7, -0.009755527448773275], ["student", 25, 0.00852124624030308]], 1, "police raid house of jnu student charged with sedition", raw_div, true);
+            exp.show_raw_text([["of", 18, -0.18320352105176238], ["raid", 7, -0.15976284329143042], ["jnu", 21, -0.12065274134101796], ["house", 12, -0.11596292739321856], ["charged", 33, -0.095326019569059], ["with", 41, -0.07203824995508956], ["student", 25, -0.04012503290716013], ["police", 0, -0.03969934125438414], ["sedition", 46, 0.03268169935864346]], 1, "police raid house of jnu student charged with sedition", raw_div, true);
             
         </script>
         </body></html>

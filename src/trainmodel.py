@@ -26,6 +26,7 @@ print("Using device:", device)
 # ===============================
 # 3. LOAD & MERGE DATASETS
 # ===============================
+'''
 true_df = pd.read_csv("data/true.csv", encoding="latin1")
 fake_df = pd.read_csv("data/fake.csv", encoding="latin1")
 
@@ -43,6 +44,37 @@ df.rename(columns={"text": "content"}, inplace=True)
 df.dropna(inplace=True)
 df.reset_index(drop=True, inplace=True)
 
+print("Dataset size:", len(df))
+print(df["Label"].value_counts())'''
+
+# Load datasets
+true_df = pd.read_csv("data/true.csv", encoding="latin1")
+fake_df = pd.read_csv("data/fake.csv", encoding="latin1")
+
+# Take 1000 random samples from each
+true_df = true_df.sample(n=1000, random_state=42)
+fake_df = fake_df.sample(n=1000, random_state=42)
+
+# Add labels: 0 = true, 1 = fake
+true_df["Label"] = 0
+fake_df["Label"] = 1
+
+# Keep only relevant columns: text + label
+true_df = true_df[["text", "Label"]]
+fake_df = fake_df[["text", "Label"]]
+
+# Merge datasets
+df = pd.concat([true_df, fake_df], ignore_index=True)
+df.rename(columns={"text": "content"}, inplace=True)
+
+# Remove missing values and reset index
+df.dropna(subset=["content"], inplace=True)
+df.reset_index(drop=True, inplace=True)
+
+# Shuffle the dataset
+df = df.sample(frac=1, random_state=42).reset_index(drop=True)
+
+# Quick summary
 print("Dataset size:", len(df))
 print(df["Label"].value_counts())
 

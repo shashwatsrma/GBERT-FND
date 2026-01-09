@@ -85,18 +85,9 @@ print("Dataset size:", len(df))
 print(df["Label"].value_counts())
 
 # ===============================
-# 4. TEXT PREPROCESSING (UPDATED)
+# 4. TEXT PREPROCESSING (OPTIMIZED FOR BERT+GPT + LIME)
 # ===============================
 
-
-# Download NLTK resources (if not already)
-nltk.download('stopwords')
-nltk.download('punkt')
-nltk.download('wordnet')
-nltk.download('omw-1.4')
-
-stop_words = set(stopwords.words('english'))
-lemmatizer = WordNetLemmatizer()
 
 # Optional contractions dictionary
 contractions = {
@@ -108,11 +99,14 @@ contractions = {
     "it's": "it is",
     "i'm": "i am",
     "they're": "they are",
-    # add more as needed
+    
 }
 
 def clean_text(text):
-    text = text.lower()
+    if not isinstance(text, str):
+        return ""
+    
+    text = text.lower()  # lowercase
     
     # Expand contractions
     for contraction, full_form in contractions.items():
@@ -121,18 +115,14 @@ def clean_text(text):
     # Remove URLs
     text = re.sub(r"http\S+", "", text)
     
-    # Keep hashtags, mentions, words; remove other symbols
-    text = re.sub(r"[^a-zA-Z0-9@#\s]", "", text)
+    # Remove unwanted symbols but keep: 
+    # letters, numbers, spaces, hashtags, mentions, basic punctuation (.,!?)
+    text = re.sub(r"[^a-zA-Z0-9@#\s.,!?]", "", text)
     
-    # Tokenize
-    tokens = word_tokenize(text)
+    # Remove extra whitespace
+    text = re.sub(r"\s+", " ", text).strip()
     
-    # Remove stop words (but keep hashtags and mentions)
-    tokens = [lemmatizer.lemmatize(word) 
-              for word in tokens 
-              if word not in stop_words or word.startswith(('#', '@'))]
-    
-    return " ".join(tokens)
+    return text
 
 # Apply preprocessing
 df["content"] = df["content"].apply(clean_text)

@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_div99OK1G1E8M4FQHP"></div>
+        <div class="lime top_div" id="top_div4OYZ1R6WTQTQZ8P"></div>
         
         <script>
-        var top_div = d3.select('#top_div99OK1G1E8M4FQHP').classed('lime top_div', true);
+        var top_div = d3.select('#top_div4OYZ1R6WTQTQZ8P').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [0.9982280062126858, 0.0017719937873141571]);
+            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [5.138772604851294e-05, 0.9999486122739515]);
             
         
         var exp_div;
             var exp = new lime.Explanation(["Real", "Fake"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["cm", -0.057850932246921866], ["chhattisgarh", -0.040184134119779225], ["away", -0.03363528548546355], ["jogi", -0.03088603766910681], ["former", -0.008726852222434066], ["passes", -0.006210249102286836]], 1, exp_div);
+                exp.show([["fact", 0.14672445766659215], ["is", 0.12154884054696455], ["check", 0.07385771134981753], ["this", 0.04532529857906168], ["man", 0.04220819223315035], ["video", 0.03833667722919303], ["the", 0.03343744436298113], ["pm", -0.027446007061010615], ["praising", 0.015287715549691449], ["in", -0.003614514143031766]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["cm", 20, -0.057850932246921866], ["chhattisgarh", 7, -0.040184134119779225], ["away", 35, -0.03363528548546355], ["jogi", 23, -0.03088603766910681], ["former", 0, -0.008726852222434066], ["passes", 28, -0.006210249102286836]], 1, "former chhattisgarh cm jogi passes away", raw_div, true);
+            exp.show_raw_text([["fact", 0, 0.14672445766659215], ["is", 11, 0.12154884054696455], ["check", 5, 0.07385771134981753], ["this", 42, 0.04532529857906168], ["man", 18, 0.04220819223315035], ["video", 47, 0.03833667722919303], ["the", 14, 0.03343744436298113], ["pm", 31, -0.027446007061010615], ["praising", 22, 0.015287715549691449], ["in", 39, -0.003614514143031766]], 1, "fact check is the man praising pm modi in this video", raw_div, true);
             
         </script>
         </body></html>

@@ -51,7 +51,7 @@ df["content"] = df["content"].apply(clean_text)
 # Ensure subset preserves class balance
 df_limited, _ = train_test_split(
     df,
-    train_size=10000,
+    train_size=30000,
     stratify=df["Label"],
     random_state=42
 )

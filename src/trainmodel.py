@@ -163,7 +163,7 @@ explainer = LimeTextExplainer(class_names=["Real", "Fake"])
 os.makedirs("lime_outputs", exist_ok=True)
 
 # Generate explanations for 5 samples
-for i in range(5):
+for i in range(2):
     text = df.iloc[i]["content"]
     exp = explainer.explain_instance(
         text,

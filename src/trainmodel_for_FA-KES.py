@@ -226,7 +226,7 @@ explainer = LimeTextExplainer(class_names=["Fake", "Real"])
 os.makedirs("FA-KES_O_P", exist_ok=True)
 
 
-for i in range(5):
+for i in range(3):
     text = df.iloc[i]["content"]
     exp = explainer.explain_instance(text, predict_proba_lime, num_features=10)
     print(f"\nSample {i+1} top words contributing to prediction:")

@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_div5S8EFOV2YVXFC3Z"></div>
+        <div class="lime top_div" id="top_divDCZ62PDCVFQQ1P5"></div>
         
         <script>
-        var top_div = d3.select('#top_div5S8EFOV2YVXFC3Z').classed('lime top_div', true);
+        var top_div = d3.select('#top_divDCZ62PDCVFQQ1P5').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [0.712661722310598, 0.287338277689402]);
+            var pp = new lime.PredictProba(pp_svg, ["Fake", "Real"], [0.03178502594071231, 0.9682149740592877]);
             
         
         var exp_div;
-            var exp = new lime.Explanation(["Real", "Fake"]);
+            var exp = new lime.Explanation(["Fake", "Real"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["positive", -0.2674234327647122], ["gadkari", -0.24012919990984177], ["for", -0.20184704644172186], ["tests", -0.17269432196110499], ["virus", -0.06274287796057247], ["nitin", 0.03203160581583574]], 1, exp_div);
+                exp.show([["jeish", 0.3221596918240242], ["200", 0.2351637438272916], ["syrian", 0.1639358671278436], ["al", -0.10160777883454757], ["in", 0.07898083123529588], ["by", -0.07614126514933851], ["aleppo", -0.07421405313123293], ["terrorists", 0.046818740736139855], ["killed", -0.044267760991849085], ["army", -0.029674397129418585]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["positive", 20, -0.2674234327647122], ["gadkari", 6, -0.24012919990984177], ["for", 29, -0.20184704644172186], ["tests", 14, -0.17269432196110499], ["virus", 33, -0.06274287796057247], ["nitin", 0, 0.03203160581583574]], 1, "nitin gadkari tests positive for virus", raw_div, true);
+            exp.show_raw_text([["jeish", 4, 0.3221596918240242], ["200", 0, 0.2351637438272916], ["syrian", 40, 0.1639358671278436], ["al", 10, -0.10160777883454757], ["in", 52, 0.07898083123529588], ["by", 37, -0.07614126514933851], ["aleppo", 55, -0.07421405313123293], ["terrorists", 19, 0.046818740736139855], ["killed", 30, -0.044267760991849085], ["army", 47, -0.029674397129418585]], 1, "200 jeish al fatah terrorists killed by syrian army in aleppo", raw_div, true);
             
         </script>
         </body></html>

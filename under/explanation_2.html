@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_div5S8EFOV2YVXFC3Z"></div>
+        <div class="lime top_div" id="top_divRMWQD01HDI88MN5"></div>
         
         <script>
-        var top_div = d3.select('#top_div5S8EFOV2YVXFC3Z').classed('lime top_div', true);
+        var top_div = d3.select('#top_divRMWQD01HDI88MN5').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [0.712661722310598, 0.287338277689402]);
+            var pp = new lime.PredictProba(pp_svg, ["True", "Fake"], [0.1848282807223025, 0.8151717192776975]);
             
         
         var exp_div;
-            var exp = new lime.Explanation(["Real", "Fake"]);
+            var exp = new lime.Explanation(["True", "Fake"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["positive", -0.2674234327647122], ["gadkari", -0.24012919990984177], ["for", -0.20184704644172186], ["tests", -0.17269432196110499], ["virus", -0.06274287796057247], ["nitin", 0.03203160581583574]], 1, exp_div);
+                exp.show([["of", -0.05287828570983396], ["raid", -0.04237544713508235], ["with", -0.03708733489770789], ["house", -0.033716604460008424], ["charged", -0.03145796565097686], ["student", 0.022220264689734745], ["jnu", 0.005028675636125403], ["sedition", -0.0031757581953194163], ["police", 0.0012842174320408016]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["positive", 20, -0.2674234327647122], ["gadkari", 6, -0.24012919990984177], ["for", 29, -0.20184704644172186], ["tests", 14, -0.17269432196110499], ["virus", 33, -0.06274287796057247], ["nitin", 0, 0.03203160581583574]], 1, "nitin gadkari tests positive for virus", raw_div, true);
+            exp.show_raw_text([["of", 18, -0.05287828570983396], ["raid", 7, -0.04237544713508235], ["with", 42, -0.03708733489770789], ["house", 12, -0.033716604460008424], ["charged", 34, -0.03145796565097686], ["student", 25, 0.022220264689734745], ["jnu", 21, 0.005028675636125403], ["sedition", 47, -0.0031757581953194163], ["police", 0, 0.0012842174320408016]], 1, "police raid house of jnu student, charged with sedition", raw_div, true);
             
         </script>
         </body></html>

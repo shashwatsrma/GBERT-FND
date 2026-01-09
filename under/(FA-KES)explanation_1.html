@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_div5S8EFOV2YVXFC3Z"></div>
+        <div class="lime top_div" id="top_div7X0CI1GF6OQ7SG0"></div>
         
         <script>
-        var top_div = d3.select('#top_div5S8EFOV2YVXFC3Z').classed('lime top_div', true);
+        var top_div = d3.select('#top_div7X0CI1GF6OQ7SG0').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [0.712661722310598, 0.287338277689402]);
+            var pp = new lime.PredictProba(pp_svg, ["Fake", "Real"], [0.7932821026226164, 0.2067178973773835]);
             
         
         var exp_div;
-            var exp = new lime.Explanation(["Real", "Fake"]);
+            var exp = new lime.Explanation(["Fake", "Real"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["positive", -0.2674234327647122], ["gadkari", -0.24012919990984177], ["for", -0.20184704644172186], ["tests", -0.17269432196110499], ["virus", -0.06274287796057247], ["nitin", 0.03203160581583574]], 1, exp_div);
+                exp.show([["of", -0.21706578672928015], ["airstrikes", -0.13972905143266043], ["dead", -0.1311560791170276], ["planned", -0.12180711393264192], ["ahead", 0.10821752965892305], ["five", 0.06461847433954764], ["in", -0.05992143162648557], ["syria", 0.04856298824309264], ["ceasefire", -0.0370732800906394]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["positive", 20, -0.2674234327647122], ["gadkari", 6, -0.24012919990984177], ["for", 29, -0.20184704644172186], ["tests", 14, -0.17269432196110499], ["virus", 33, -0.06274287796057247], ["nitin", 0, 0.03203160581583574]], 1, "nitin gadkari tests positive for virus", raw_div, true);
+            exp.show_raw_text([["of", 36, -0.21706578672928015], ["airstrikes", 19, -0.13972905143266043], ["dead", 5, -0.1311560791170276], ["planned", 39, -0.12180711393264192], ["ahead", 30, 0.10821752965892305], ["five", 0, 0.06461847433954764], ["in", 10, -0.05992143162648557], ["syria", 13, 0.04856298824309264], ["ceasefire", 47, -0.0370732800906394]], 1, "five dead in syria airstrikes ahead of planned ceasefire", raw_div, true);
             
         </script>
         </body></html>

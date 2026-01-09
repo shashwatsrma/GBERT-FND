@@ -27,7 +27,6 @@ from sklearn.metrics import accuracy_score, classification_report
 
 from lime.lime_text import LimeTextExplainer
 
-
 # Download NLTK stopwords
 nltk.download('stopwords')
 nltk.download('punkt')
@@ -56,13 +55,14 @@ df["Label"] = df["Label"].astype(int)
 df = df.sample(frac=1, random_state=42).reset_index(drop=True)
 
 # Limit dataset for testing (optional)
-n_fake = min(len(df[df["Label"]==0]), 50)
-n_real = min(len(df[df["Label"]==1]), 50)
+#n_fake = min(len(df[df["Label"]==0]), 50)
+#n_real = min(len(df[df["Label"]==1]), 50)
 
-fake_sample = df[df["Label"]==0].sample(n=n_fake, random_state=42)
-real_sample = df[df["Label"]==1].sample(n=n_real, random_state=42)
-
+fake_sample = df[df["Label"]==0]
+real_sample = df[df["Label"]==1]
 df = pd.concat([fake_sample, real_sample]).sample(frac=1, random_state=42).reset_index(drop=True)
+
+
 print("Final dataset size:", len(df))
 print(df["Label"].value_counts())
 
@@ -166,7 +166,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 # ===============================
 # 9. TRAIN CLASSIFIER
 # ===============================
-model = LogisticRegression(max_iter=100)
+model = LogisticRegression(max_iter=10000)
 model.fit(X_train, y_train)
 print("Classifier trained successfully.")
 
@@ -238,13 +238,12 @@ def generate_explanation_summary(text):
 
 print("\nAll LIME explanations saved in 'FA-KES O_P/After_TP(1)' folder.")'''
 
-for i in range(1):
+for i in range(2):
     text = df.iloc[i]["content"]
-    
-    summary = generate_explanation_summary(text)
-    print(f"\nSample {i+1} Explanation Summary:")
-    print(summary)
-    
     exp = explainer.explain_instance(text, predict_proba_lime, num_features=10)
-    exp.save_to_file(f"FA-KES O_P/After_TP(1)/(sum)FAKES_explanation_{i+1}.html")
-print("\nAll LIME explanations saved in 'FA-KES_O_P/After_TP(1)' folder.")
+    print(f"\nSample {i+1} top words contributing to prediction:")
+    print(exp.as_list())
+    exp.save_to_file(f"under/(FA-KES)explanation_{i+1}.html")
+    print(f"LIME explanation for sample {i+1} saved.")
+
+print("\nAll LIME explanations saved in 'under/' folder.")

@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_div5S8EFOV2YVXFC3Z"></div>
+        <div class="lime top_div" id="top_divC7AIVEFDFXTBGSQ"></div>
         
         <script>
-        var top_div = d3.select('#top_div5S8EFOV2YVXFC3Z').classed('lime top_div', true);
+        var top_div = d3.select('#top_divC7AIVEFDFXTBGSQ').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [0.712661722310598, 0.287338277689402]);
+            var pp = new lime.PredictProba(pp_svg, ["True", "Fake"], [0.8484643513864212, 0.15153564861357877]);
             
         
         var exp_div;
-            var exp = new lime.Explanation(["Real", "Fake"]);
+            var exp = new lime.Explanation(["True", "Fake"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["positive", -0.2674234327647122], ["gadkari", -0.24012919990984177], ["for", -0.20184704644172186], ["tests", -0.17269432196110499], ["virus", -0.06274287796057247], ["nitin", 0.03203160581583574]], 1, exp_div);
+                exp.show([["transition", -0.465622925908869], ["team", 0.27139298508025805], ["cabinet", -0.24757547982660422], ["trump", 0.1759118885318864], ["shuffles", 0.10772541690375426], ["for", -0.09214607461890764], ["eyes", 0.08307046375621269], ["loyalists", 0.01171346593444117]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["positive", 20, -0.2674234327647122], ["gadkari", 6, -0.24012919990984177], ["for", 29, -0.20184704644172186], ["tests", 14, -0.17269432196110499], ["virus", 33, -0.06274287796057247], ["nitin", 0, 0.03203160581583574]], 1, "nitin gadkari tests positive for virus", raw_div, true);
+            exp.show_raw_text([["transition", 15, -0.465622925908869], ["team", 26, 0.27139298508025805], ["cabinet", 51, -0.24757547982660422], ["trump", 0, 0.1759118885318864], ["shuffles", 6, 0.10772541690375426], ["for", 47, -0.09214607461890764], ["eyes", 32, 0.08307046375621269], ["loyalists", 37, 0.01171346593444117]], 1, "trump shuffles transition team, eyes loyalists for cabinet", raw_div, true);
             
         </script>
         </body></html>

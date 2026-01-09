@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_div5S8EFOV2YVXFC3Z"></div>
+        <div class="lime top_div" id="top_divY0EL65ZDCOB5ZK5"></div>
         
         <script>
-        var top_div = d3.select('#top_div5S8EFOV2YVXFC3Z').classed('lime top_div', true);
+        var top_div = d3.select('#top_divY0EL65ZDCOB5ZK5').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["Real", "Fake"], [0.712661722310598, 0.287338277689402]);
+            var pp = new lime.PredictProba(pp_svg, ["True", "Fake"], [9.919900033961149e-06, 0.999990080099966]);
             
         
         var exp_div;
-            var exp = new lime.Explanation(["Real", "Fake"]);
+            var exp = new lime.Explanation(["True", "Fake"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["positive", -0.2674234327647122], ["gadkari", -0.24012919990984177], ["for", -0.20184704644172186], ["tests", -0.17269432196110499], ["virus", -0.06274287796057247], ["nitin", 0.03203160581583574]], 1, exp_div);
+                exp.show([["stolenâ", 5.663943766474243e-05], ["and", -3.2098268606214185e-05], ["details", 2.054900680528206e-05], ["clinton", -1.8365403303887764e-05], ["email", 1.756847819584944e-05], ["trump", -1.6543440801347335e-05], ["â", 1.6230986444342933e-05], ["probe", 1.1854245698294493e-05], ["secret", 9.908446703133292e-06], ["tower", -9.17432610510972e-06]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_text([["positive", 20, -0.2674234327647122], ["gadkari", 6, -0.24012919990984177], ["for", 29, -0.20184704644172186], ["tests", 14, -0.17269432196110499], ["virus", 33, -0.06274287796057247], ["nitin", 0, 0.03203160581583574]], 1, "nitin gadkari tests positive for virus", raw_div, true);
+            exp.show_raw_text([["stolen\u00e2", 36, 5.663943766474243e-05], ["and", 69, -3.2098268606214185e-05], ["details", 93, 2.054900680528206e-05], ["clinton", 73, -1.8365403303887764e-05], ["email", 81, 1.756847819584944e-05], ["trump", 50, -1.6543440801347335e-05], ["\u00e2", 33, 1.6230986444342933e-05], ["probe", 87, 1.1854245698294493e-05], ["secret", 0, 9.908446703133292e-06], ["tower", 56, -9.17432610510972e-06]], 1, "secret service laptop reportedly \u00e2\u0080\u0098stolen\u00e2\u0080\u0099 had trump tower layout and clinton email probe details", raw_div, true);
             
         </script>
         </body></html>

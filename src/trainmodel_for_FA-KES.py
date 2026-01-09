@@ -29,6 +29,9 @@ from lime.lime_text import LimeTextExplainer
 
 # Download NLTK stopwords
 nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
 
 # ===============================
 # 2. DEVICE CONFIGURATION
@@ -52,8 +55,8 @@ df["Label"] = df["Label"].astype(int)
 df = df.sample(frac=1, random_state=42).reset_index(drop=True)
 
 # Limit dataset for testing (optional)
-n_fake = min(len(df[df["Label"]==0]), 500)
-n_real = min(len(df[df["Label"]==1]), 500)
+n_fake = min(len(df[df["Label"]==0]), 50)
+n_real = min(len(df[df["Label"]==1]), 50)
 
 fake_sample = df[df["Label"]==0].sample(n=n_fake, random_state=42)
 real_sample = df[df["Label"]==1].sample(n=n_real, random_state=42)
@@ -98,7 +101,7 @@ def full_preprocess(text, frequent_words=frequent_words, rare_words=rare_words, 
     )
     
     # Replace numbers with <NUM>
-    text = re.sub(r"\d+", "<NUM>", text)
+    #text = re.sub(r"\d+", "<NUM>", text)
     
     # Remove punctuation (except sentence-ending: .!?)
     text = re.sub(r"[^a-zA-Z\s.!?]", "", text)
@@ -199,7 +202,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 # ===============================
 # 9. TRAIN CLASSIFIER
 # ===============================
-model = LogisticRegression(max_iter=10000)
+model = LogisticRegression(max_iter=100)
 model.fit(X_train, y_train)
 print("Classifier trained successfully.")
 
@@ -228,7 +231,7 @@ for i in range(5):
     exp = explainer.explain_instance(text, predict_proba_lime, num_features=10)
     print(f"\nSample {i+1} top words contributing to prediction:")
     print(exp.as_list())
-    exp.save_to_file(f"FA-KES O_P/After_TP/FAKES_explanation_{i+1}.html")
+    exp.save_to_file(f"FA-KES O_P/After_TP(1)/FAKES_explanation_{i+1}.html")
     print(f"LIME explanation for sample {i+1} saved.")
 
-print("\nAll LIME explanations saved in 'FA-KES O_P/After_TP' folder.")
+print("\nAll LIME explanations saved in 'FA-KES O_P/After_TP(1)' folder.")

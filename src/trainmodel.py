@@ -62,8 +62,6 @@ df.loc[half:, "Label"] = 1     # Fake
 print("Balanced Label Distribution:")
 print(df["Label"].value_counts())
 
-print("Label distribution:\n", df["Label"].value_counts())
-
 
 
 # ===============================
@@ -176,6 +174,6 @@ for i in range(5):
     print(f"\nTop words for sample {i+1}:")
     print(exp.as_list())
 
-    exp.save_to_file(f"lime_outputs/explanation_{i+1}.html")
+    exp.save_to_file(f"lime_outputs/(2)explanation_{i+1}.html")
 
 print("\nLIME explanations saved in lime_outputs/")

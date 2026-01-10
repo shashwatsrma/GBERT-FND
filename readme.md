@@ -30,32 +30,6 @@ To ensure transparency and interpretability, the system integrates **LIME (Local
 
 ---
 
- 📂 Project Structure
-IFND_BERT_GPT/
-│
-├── data/
-│ ├── fake.csv
-│ ├── true.csv
-│ ├── IFND.csv
-│ └── FA-KES-Dataset.csv
-│
-├── src/
-│ ├── trainmodel.py
-│ ├── trainmodel_for_FA-KES.py
-│ ├── trainmodelTF.py
-│ └── UNDER.py
-│
-├── REPORT/
-│ └── Project documentation
-│
-├── requirements.txt
-├── README.md
-└── venv/ (optional)
-
-
-
-
-
  🗃️ Dataset
 Supported datasets:
 - IFND Dataset
@@ -128,3 +102,4 @@ Multilingual fake news detection
 Web-based deployment
 
 SHAP-based global explainability 
+

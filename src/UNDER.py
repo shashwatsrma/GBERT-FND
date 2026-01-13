@@ -31,13 +31,13 @@ print("Using device:", device)
 # ===============================
 # 3. LOAD DATASETS
 # ===============================
-true_df = pd.read_csv("data/TRUE nepali news .csv", encoding="utf-8")
-fake_df = pd.read_csv("data/fake.csv", encoding="latin1")
+true_df = pd.read_csv("data/datanep.csv", encoding="utf-8")
+fake_df = pd.read_csv("data/trued.csv", encoding="latin1")
 
 true_df["Label"] = 0   # REAL
 fake_df["Label"] = 1   # FAKE
 
-true_df = true_df[["TITLE", "Label"]].dropna().rename(columns={"TITLE": "content"})
+true_df = true_df[["title", "Label"]].dropna().rename(columns={"title": "content"})
 fake_df = fake_df[["title", "Label"]].dropna().rename(columns={"title": "content"})
 
 # Balance dataset

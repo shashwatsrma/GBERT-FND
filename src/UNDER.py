@@ -32,7 +32,7 @@ print("Using device:", device)
 # 3. LOAD DATASETS
 # ===============================
 true_df = pd.read_csv("data/datanep.csv", encoding="utf-8")
-fake_df = pd.read_csv("data/fakenep.csv", encoding="latin1")
+fake_df = pd.read_csv("data/fakenep.csv", encoding="utf-8")
 
 true_df["Label"] = 0   # REAL
 fake_df["Label"] = 1   # FAKE
@@ -41,7 +41,7 @@ true_df = true_df[["title", "Label"]].dropna().rename(columns={"title": "content
 fake_df = fake_df[["title", "Label"]].dropna().rename(columns={"title": "content"})
 
 # Balance dataset
-N = min(len(true_df), len(fake_df), 3000)
+N = min(len(true_df), len(fake_df), 5000)
 true_df = true_df.sample(n=N, random_state=42)
 fake_df = fake_df.sample(n=N, random_state=42)
 
@@ -157,7 +157,7 @@ print("\nFeature vector size:", X_train.shape[1])
 # ===============================
 # 9. TRAIN CLASSIFIER
 # ===============================
-classifier = LogisticRegression(max_iter=5000)
+classifier = LogisticRegression(max_iter=10000)
 classifier.fit(X_train, y_train)
 
 print("\nModel training completed.")

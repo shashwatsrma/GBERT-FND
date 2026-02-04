@@ -176,7 +176,7 @@ print("Classifier trained successfully.")
 y_pred = model.predict(X_test)
 print("\nAccuracy:", accuracy_score(y_test, y_pred))
 print("\nClassification Report:\n", classification_report(y_test, y_pred))
-
+"""
 # ===============================
 # 11. LIME EXPLAINABILITY
 # ===============================
@@ -248,3 +248,4 @@ for i in range(1):
     exp = explainer.explain_instance(text, predict_proba_lime, num_features=10)
     exp.save_to_file(f"FA-KES O_P/After_TP(1)/(sum)FAKES_explanation_{i+1}.html")
 print("\nAll LIME explanations saved in 'FA-KES_O_P/After_TP(1)' folder.")
+"""

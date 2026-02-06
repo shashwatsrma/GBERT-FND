@@ -32,7 +32,7 @@ print("Using device:", device)
 # 3. LOAD DATASETS
 # ===============================
 true_df = pd.read_csv("data/datanep.csv", encoding="utf-8")
-fake_df = pd.read_csv("data/fakenep(fabricated).csv", encoding="utf-8")
+fake_df = pd.read_csv("data/fake.csv", encoding="utf-8")
 
 true_df["Label"] = 0   # REAL
 fake_df["Label"] = 1   # FAKE

@@ -38,7 +38,7 @@ Supported datasets:
 
 Each dataset should contain:
 - `text` – news article content  
-- `label` – `0` for Fake, `1` for Real  
+- `label` – `1` for Fake, `0` for Real  
 
 ------------------------------------------------------------------
 
@@ -102,4 +102,5 @@ Multilingual fake news detection
 Web-based deployment
 
 SHAP-based global explainability 
+
 

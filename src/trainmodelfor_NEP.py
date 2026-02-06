@@ -41,7 +41,7 @@ true_df = true_df[["title", "Label"]].dropna().rename(columns={"title": "content
 fake_df = fake_df[["title", "Label"]].dropna().rename(columns={"title": "content"})
 
 # Balance dataset
-N = min(len(true_df), len(fake_df), 5000)
+N = min(len(true_df), len(fake_df), 200)
 true_df = true_df.sample(n=N, random_state=42)
 fake_df = fake_df.sample(n=N, random_state=42)
 

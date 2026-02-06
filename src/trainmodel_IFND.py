@@ -147,7 +147,7 @@ y_pred = model.predict(X_test)
 
 print("\nAccuracy:", accuracy_score(y_test, y_pred))
 print("\nClassification Report:\n", classification_report(y_test, y_pred))
-
+"""
 # ===============================
 # 12. LIME EXPLAINABILITY
 # ===============================
@@ -176,3 +176,4 @@ for i in range(2):
     exp.save_to_file(f"IFND(FIX)/explanation_{i+1}.html")
 
 print("\nLIME explanations saved in IFND(FIX)/")
+"""

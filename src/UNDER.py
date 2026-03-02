@@ -26,10 +26,10 @@ print("Using device:", device)
 # ===============================
 # 3. LOAD DATASET
 # ===============================
-df = pd.read_csv("data/combinedv4.csv", encoding="latin1")
+df = pd.read_csv("data/combinedv5.csv", encoding="latin1")
 
-df["content"] = df["Statement"]
-df["Label"] = df["Label"].map({"TRUE": 0, "Fake": 1})  # 0 = Real, 1 = Fake
+df["content"] = df["TITLE"]
+df["Label"] = df["LABEL"].map({"TRUE": 0, "Fake": 1})  # 0 = Real, 1 = Fake
 
 df = df.dropna(subset=["content", "Label"])
 

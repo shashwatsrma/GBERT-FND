@@ -31,6 +31,14 @@ df["Label"] = df["LABEL"].map({"TRUE": 0, "Fake": 1})  # 0 = Real, 1 = Fake
 
 df = df.dropna(subset=["content", "Label"])
 
+# --- HANDLE DUPLICATE TITLES ---  # <-- ADDED
+duplicates = df.duplicated(subset=["content"])  # <-- ADDED
+num_duplicates = duplicates.sum()               # <-- ADDED
+print(f"\nNumber of duplicate titles found: {num_duplicates}")  # <-- ADDED
+
+df = df.drop_duplicates(subset=["content"]).reset_index(drop=True)  # <-- ADDED
+print(f"Dataset size after removing duplicates: {len(df)}")          # <-- ADDED
+
 
 # 4. TEXT PREPROCESSING (HANDLE ARTIFACTS)
 def clean_text(text):

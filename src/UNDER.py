@@ -24,7 +24,7 @@ print("Using device:", device)
 
 
 # 3. LOAD DATASET
-df = pd.read_csv("data/combinedv8.csv", encoding="latin1")
+df = pd.read_csv("data/combinedv8.1.csv", encoding="latin1")
 
 df["content"] = df["TITLE"]
 df["Label"] = df["LABEL"].map({"TRUE": 0, "Fake": 1})  # 0 = Real, 1 = Fake
@@ -52,7 +52,7 @@ df["content"] = df["content"].apply(clean_text)
 # 5. STRATIFIED SAMPLING (LIMIT TO 3000)
 df_limited, _ = train_test_split(
     df,
-    train_size=30000,
+    train_size=32000,
     stratify=df["Label"],
     random_state=42
 )

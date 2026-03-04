@@ -58,12 +58,26 @@ df["content"] = df["content"].apply(clean_text)
 
 
 # 5. STRATIFIED SAMPLING (LIMIT TO 3000)
-df_limited, _ = train_test_split(
-    df,
-    train_size=50500,
-    stratify=df["Label"],
-    random_state=42
-)
+# -----------------------------
+# STEP 5: OPTIONAL STRATIFIED SAMPLING
+# -----------------------------
+sample_size = None
+# Set sample_size to None to use the whole dataset
+# Or set it to an integer to limit the dataset
+ # e.g., 3000 or 50500 for a subset
+
+if sample_size is not None and sample_size < len(df):
+    df, _ = train_test_split(
+        df,
+        train_size=sample_size,
+        stratify=df["Label"],
+        random_state=42
+    )
+    print(f"\nUsing a sampled subset of {sample_size} rows")
+else:
+    print(f"\nUsing the full dataset of {len(df)} rows")
+
+df = df.reset_index(drop=True)
 
 df = df_limited.reset_index(drop=True)
 

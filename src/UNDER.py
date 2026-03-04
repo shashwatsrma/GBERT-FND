@@ -79,8 +79,6 @@ else:
 
 df = df.reset_index(drop=True)
 
-df = df_limited.reset_index(drop=True)
-
 print("\nLabel Distribution:")
 print(df["Label"].value_counts())
 

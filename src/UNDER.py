@@ -24,7 +24,7 @@ print("Using device:", device)
 
 
 # 3. LOAD DATASET
-df = pd.read_csv("data/cov7+v8uniqf.csv", encoding="latin1")
+df = pd.read_csv("data/FNEP.csv", encoding="latin1")
 
 df["content"] = df["TITLE"]
 df["Label"] = df["LABEL"].map({"TRUE": 0, "Fake": 1})  # 0 = Real, 1 = Fake
